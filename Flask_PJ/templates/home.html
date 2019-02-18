@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+{% block content %}
+    {% for thought in thoughts %}
+        <h1>{{thought.title}}</h1>
+        <p>{{thought.author}}</p>
+        <p>{{thought.date}}</p>
+        <p>{{thought.content}}</p>
+    {% endfor %}
+{% endblock content %}
