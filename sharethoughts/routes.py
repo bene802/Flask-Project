@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request
 from sharethoughts import app, db, bcrypt
-from sharethoughts.forms import SignUpForm, LoginForm
+from sharethoughts.forms import SignUpForm, LoginForm, UpdateAccountForm
 from sharethoughts.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -67,7 +67,16 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route('/account')
+@app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
-    return render_template('account.html', title='Account')
+    image = url_for('static', filename='images/' + current_user.image_file)
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        db.session.commit()
+        flash('You have updated your account!', 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':  # put original info into the table
+        form.username.data = current_user.username
+    return render_template('account.html', title='Account', image=image, form=form)
