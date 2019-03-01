@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from sharethoughts.models import User
 
@@ -38,3 +38,9 @@ class UpdateAccountForm(FlaskForm):
         user = User.query.filter_by(username=username.data).first()
         if user and username.data != current_user.username:
             raise ValidationError('Username exsited! Please try a different username.')
+
+
+class PostForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    content = TextAreaField('Your Thoughs', validators=[DataRequired()])
+    submit = SubmitField('Submit')

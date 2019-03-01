@@ -1,10 +1,11 @@
 {% extends 'layout.html' %}
 {% block content %}
-    {% for thought in thoughts %}
-        <h1>{{thought.title}}</h1>
-        <p>{{thought.author}}</p>
-        <p>{{thought.date}}</p>
-        <p>{{thought.content}}</p>
+    {% for post in posts %}
+        <img class="rounded-circle article-img"  src="{{ url_for('static', filename='images/' + post.author.image_file) }}">
+        <h1><a class='article-title' href="{{ url_for('post', post_id=post.id) }}">{{post.title}}</a></h1>
+        <p>{{post.author.username}}</p>
+        <p>{{post.date.strftime("%H:%M, %m/%d/%Y")}}</p>
+        <p>{{post.content}}</p>
     {% endfor %}
 {% endblock content %}
 
