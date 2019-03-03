@@ -11,13 +11,47 @@
                 <a class="mr-2" href="#">{{ post.author.username }}</a>
                 <small class="text-muted float-right">{{post.date.strftime("%H:%M, %m/%d/%Y")}}</small>
             </div>
-            <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
+            <div class='row'>
+                <div class='col'>
+                    <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
+                </div>
+                {% if post.author == current_user %}
+                    <div class='float-right'>
+                        <a href="{{ url_for('update_post', post_id=post.id) }}"><i class="fas fa-edit fa-lg"></i></a>
+                        <a href="#"><i class="fas fa-trash-alt fa-lg" data-toggle='modal' data-target='#deleteModal'></i></a>
+                    </div>
+                {% endif %}
+            </div>
             <p class="article-content">{{ post.content }}</p>
         </div>
     </article>
+
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel">Are you sure you want to Delete this post?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST">
+                <input class="btn btn-danger" type="submit" value="Delete">
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
     {% endfor %}
 </div>
+
+
+
+
+
+
+
 {% endblock content %}
-
-
-
